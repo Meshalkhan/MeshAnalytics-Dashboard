@@ -71,7 +71,7 @@ cd client && npm run build && npm run preview
 cd ../server && npm start
 ```
 
-## Architecture
+## Mermaid Diagram
 
 ```mermaid
 flowchart LR
