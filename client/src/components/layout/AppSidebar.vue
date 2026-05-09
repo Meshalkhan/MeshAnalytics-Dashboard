@@ -9,7 +9,7 @@
       </div>
       <div class="sidebar__brand-text">
         <span class="sidebar__brand-name">MeshAnalytics</span>
-        <span class="sidebar__brand-meta">Workspace · Acme Inc.</span>
+        <span class="sidebar__brand-meta">Workspace · Mesh Inc.</span>
       </div>
     </div>
 
@@ -44,8 +44,8 @@
       <div class="sidebar__user">
         <div class="sidebar__avatar">AM</div>
         <div class="sidebar__user-meta">
-          <span class="sidebar__user-name">Alex Morgan</span>
-          <span class="sidebar__user-role">Revenue Ops</span>
+          <span class="sidebar__user-name">Meshal Khan</span>
+          <span class="sidebar__user-role">Admin</span>
         </div>
       </div>
       <button class="sidebar__icon-btn" aria-label="Sign out">
