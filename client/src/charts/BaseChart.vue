@@ -14,36 +14,55 @@ const props = defineProps({
 const baseOptions = {
   responsive: true,
   maintainAspectRatio: false,
+  layout: { padding: 4 },
+  interaction: { mode: "index", intersect: false },
   plugins: {
     legend: {
+      align: "end",
       labels: {
-        color: "#334155",
-        boxWidth: 14
+        color: "#475569",
+        usePointStyle: true,
+        boxWidth: 6,
+        boxHeight: 6,
+        padding: 16,
+        font: { size: 12, family: "Inter, sans-serif" }
       }
     },
     tooltip: {
       backgroundColor: "#0f172a",
-      padding: 10
+      titleColor: "#e2e8f0",
+      bodyColor: "#e2e8f0",
+      padding: 10,
+      cornerRadius: 8,
+      displayColors: false
     }
   },
   scales: {
     x: {
-      ticks: { color: "#64748b" },
-      grid: { color: "#e2e8f0" }
+      ticks: { color: "#94a3b8", font: { size: 11, family: "Inter, sans-serif" } },
+      grid: { display: false },
+      border: { display: false }
     },
     y: {
-      ticks: { color: "#64748b" },
-      grid: { color: "#e2e8f0" }
+      ticks: { color: "#94a3b8", font: { size: 11, family: "Inter, sans-serif" } },
+      grid: { color: "rgba(148, 163, 184, 0.15)" },
+      border: { display: false }
     }
   }
 };
 
-const mergedOptions = computed(() => ({
-  ...baseOptions,
-  ...props.options,
-  plugins: {
-    ...baseOptions.plugins,
-    ...(props.options.plugins || {})
-  }
-}));
+const mergedOptions = computed(() => {
+  const overrides = props.options || {};
+  return {
+    ...baseOptions,
+    ...overrides,
+    plugins: {
+      ...baseOptions.plugins,
+      ...(overrides.plugins || {}),
+      legend: { ...baseOptions.plugins.legend, ...(overrides.plugins?.legend || {}) },
+      tooltip: { ...baseOptions.plugins.tooltip, ...(overrides.plugins?.tooltip || {}) }
+    },
+    scales: overrides.scales === undefined ? baseOptions.scales : overrides.scales
+  };
+});
 </script>
