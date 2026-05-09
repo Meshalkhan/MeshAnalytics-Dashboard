@@ -70,8 +70,11 @@ npm run dev          # http://localhost:5173
 cd client && npm run build && npm run preview
 cd ../server && npm start
 ```
+## Goal
 
-## Mermaid Diagram
+Demonstrate the engineering decisions behind a real SaaS product: a clean separation of UI, state, and data access on the client; a layered, validated, observable API on the server; a single source of truth for business logic shared between long-running and serverless runtimes; and a UI system that can grow into a full design library without rework.
+
+## Mermaid diagram
 
 ```mermaid
 flowchart LR
@@ -104,7 +107,3 @@ flowchart LR
   classDef boundary fill:#0b1220,stroke:#334155,color:#e2e8f0;
   class Client,Server boundary;
 ```
-
-## Goal
-
-Demonstrate the engineering decisions behind a real SaaS product: a clean separation of UI, state, and data access on the client; a layered, validated, observable API on the server; a single source of truth for business logic shared between long-running and serverless runtimes; and a UI system that can grow into a full design library without rework.
