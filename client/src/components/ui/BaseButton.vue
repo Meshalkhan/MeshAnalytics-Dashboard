@@ -56,7 +56,14 @@ defineProps({
 }
 
 .btn--icon {
-  padding: 8px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  gap: 0;
+}
+
+.btn--icon .btn__label {
+  display: none;
 }
 
 .btn--primary {

@@ -28,6 +28,7 @@ export const useUiStore = defineStore("ui", {
   state: () => ({
     activeNav: "dashboard",
     sidebarOpen: false,
+    sidebarCollapsed: false,
     searchQuery: "",
     notificationsOpen: false,
     notifications: initialNotifications(),
@@ -49,6 +50,9 @@ export const useUiStore = defineStore("ui", {
     },
     closeSidebar() {
       this.sidebarOpen = false;
+    },
+    toggleSidebarCollapsed(force) {
+      this.sidebarCollapsed = typeof force === "boolean" ? force : !this.sidebarCollapsed;
     },
     setSearchQuery(value) {
       this.searchQuery = value;

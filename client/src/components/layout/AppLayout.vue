@@ -1,5 +1,5 @@
 <template>
-  <div class="app-shell">
+  <div class="app-shell" :class="{ 'app-shell--collapsed': sidebarCollapsed }">
     <div
       v-if="sidebarOpen"
       class="app-shell__overlay"
@@ -27,7 +27,7 @@ defineProps({
   activeNav: { type: String, default: "dashboard" }
 });
 
-const { sidebarOpen, closeSidebar } = useUi();
+const { sidebarOpen, sidebarCollapsed, closeSidebar } = useUi();
 
 watch(sidebarOpen, (open) => {
   document.body.style.overflow = open ? "hidden" : "";
@@ -51,6 +51,11 @@ watch(sidebarOpen, (open) => {
   flex-direction: column;
   min-width: 0;
   margin-left: var(--sidebar-width);
+  transition: margin-left var(--transition-base);
+}
+
+.app-shell--collapsed .app-shell__main {
+  margin-left: var(--sidebar-collapsed-width);
 }
 
 .app-shell__content {
@@ -68,7 +73,8 @@ watch(sidebarOpen, (open) => {
     flex-direction: column;
   }
 
-  .app-shell__main {
+  .app-shell__main,
+  .app-shell--collapsed .app-shell__main {
     margin-left: 0;
   }
 

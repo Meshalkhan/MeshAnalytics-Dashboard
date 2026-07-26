@@ -1,22 +1,11 @@
 <template>
   <section class="section-view">
-    <div class="section-view__toolbar">
-      <BaseButton variant="secondary" class="section-view__back" @click="$emit('back')">
-        <template #leading><BaseIcon name="arrowLeft" :size="16" /></template>
-        Back to Dashboard
-      </BaseButton>
-    </div>
-
     <BaseCard :title="meta.title" :subtitle="meta.subtitle">
       <div class="section-view__body">
         <p>{{ meta.description }}</p>
         <ul>
           <li v-for="item in meta.bullets" :key="item">{{ item }}</li>
         </ul>
-        <BaseButton variant="primary" class="section-view__cta" @click="$emit('back')">
-          <template #leading><BaseIcon name="arrowLeft" :size="16" /></template>
-          Back to Dashboard
-        </BaseButton>
       </div>
     </BaseCard>
   </section>
@@ -25,14 +14,10 @@
 <script setup>
 import { computed } from "vue";
 import BaseCard from "../components/ui/BaseCard.vue";
-import BaseButton from "../components/ui/BaseButton.vue";
-import BaseIcon from "../components/ui/BaseIcon.vue";
 
 const props = defineProps({
   section: { type: String, required: true }
 });
-
-defineEmits(["back"]);
 
 const CONTENT = {
   reports: {
@@ -82,16 +67,8 @@ const meta = computed(() => CONTENT[props.section] || CONTENT.settings);
 
 <style scoped>
 .section-view {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
   width: 100%;
   min-width: 0;
-}
-
-.section-view__toolbar {
-  display: flex;
-  align-items: center;
 }
 
 .section-view__body {
@@ -113,12 +90,5 @@ const meta = computed(() => CONTENT[props.section] || CONTENT.settings);
 
 .section-view__body li {
   color: var(--color-text);
-}
-
-@media (max-width: 600px) {
-  .section-view__toolbar :deep(.btn),
-  .section-view__cta {
-    width: 100%;
-  }
 }
 </style>

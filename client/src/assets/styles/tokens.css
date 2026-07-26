@@ -71,5 +71,6 @@
   --transition-base: 0.2s ease;
 
   --sidebar-width: 280px;
+  --sidebar-collapsed-width: 80px;
   --header-height: 70px;
 }

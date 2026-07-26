@@ -10,6 +10,7 @@ export function useUi() {
     setActiveNav: store.setActiveNav,
     toggleSidebar: store.toggleSidebar,
     closeSidebar: store.closeSidebar,
+    toggleSidebarCollapsed: store.toggleSidebarCollapsed,
     setSearchQuery: store.setSearchQuery,
     toggleNotifications: store.toggleNotifications,
     markNotificationRead: store.markNotificationRead,

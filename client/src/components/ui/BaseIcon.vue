@@ -52,6 +52,8 @@ const ICONS = {
   menu: ["M4 6h16", "M4 12h16", "M4 18h16"],
   close: ["M6 6l12 12", "M18 6 6 18"],
   chevronDown: ["M6 9l6 6 6-6"],
+  chevronLeft: ["M15 18l-6-6 6-6"],
+  chevronRight: ["M9 18l6-6-6-6"],
   sort: ["M8 6v12", "M5 9l3-3 3 3", "M16 18V6", "M13 15l3 3 3-3"]
 };
 

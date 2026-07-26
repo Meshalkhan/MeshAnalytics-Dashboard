@@ -1,5 +1,12 @@
 <template>
-  <aside class="sidebar" :class="{ 'sidebar--open': open }" aria-label="Primary">
+  <aside
+    class="sidebar"
+    :class="{
+      'sidebar--open': open,
+      'sidebar--collapsed': collapsed
+    }"
+    aria-label="Primary"
+  >
     <div class="sidebar__brand">
       <div class="sidebar__logo">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -27,12 +34,14 @@
         v-for="item in primary"
         :key="item.id"
         type="button"
+        :title="item.label"
+        :aria-label="item.label"
         :class="['sidebar__link', { 'sidebar__link--active': item.id === active }]"
         @click="onNavigate(item.id)"
       >
         <BaseIcon :name="item.icon" :size="18" />
-        <span>{{ item.label }}</span>
-        <BaseBadge v-if="item.badge" tone="info">{{ item.badge }}</BaseBadge>
+        <span class="sidebar__link-label">{{ item.label }}</span>
+        <BaseBadge v-if="item.badge" tone="info" class="sidebar__badge">{{ item.badge }}</BaseBadge>
       </button>
 
       <p class="sidebar__section">Workspace</p>
@@ -40,11 +49,13 @@
         v-for="item in secondary"
         :key="item.id"
         type="button"
+        :title="item.label"
+        :aria-label="item.label"
         :class="['sidebar__link', { 'sidebar__link--active': item.id === active }]"
         @click="onNavigate(item.id)"
       >
         <BaseIcon :name="item.icon" :size="18" />
-        <span>{{ item.label }}</span>
+        <span class="sidebar__link-label">{{ item.label }}</span>
       </button>
     </nav>
 
@@ -60,6 +71,16 @@
         <BaseIcon name="logout" :size="16" />
       </button>
     </div>
+
+    <button
+      type="button"
+      class="sidebar__collapse"
+      :aria-label="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+      :title="collapsed ? 'Expand' : 'Collapse'"
+      @click="toggleSidebarCollapsed()"
+    >
+      <BaseIcon :name="collapsed ? 'chevronRight' : 'chevronLeft'" :size="14" />
+    </button>
   </aside>
 </template>
 
@@ -73,7 +94,14 @@ defineProps({
   open: { type: Boolean, default: false }
 });
 
-const { setActiveNav, closeSidebar, signOut, showToast } = useUi();
+const {
+  sidebarCollapsed: collapsed,
+  setActiveNav,
+  closeSidebar,
+  toggleSidebarCollapsed,
+  signOut,
+  showToast
+} = useUi();
 
 const primary = [
   { id: "dashboard", label: "Dashboard", icon: "dashboard" },
@@ -112,6 +140,7 @@ function onSignOut() {
   border-right: 1px solid var(--color-sidebar-border);
   z-index: 100;
   box-sizing: border-box;
+  transition: width var(--transition-base);
 }
 
 .sidebar__brand {
@@ -120,6 +149,7 @@ function onSignOut() {
   gap: var(--space-3);
   padding: 12px;
   margin-bottom: var(--space-6);
+  position: relative;
 }
 
 .sidebar__logo {
@@ -138,6 +168,7 @@ function onSignOut() {
   flex-direction: column;
   min-width: 0;
   flex: 1;
+  overflow: hidden;
 }
 
 .sidebar__brand-name {
@@ -146,6 +177,7 @@ function onSignOut() {
   color: var(--color-text);
   letter-spacing: 0.5px;
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .sidebar__brand-meta {
@@ -153,6 +185,7 @@ function onSignOut() {
   color: var(--color-text-muted);
   letter-spacing: 0.3px;
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .sidebar__close {
@@ -172,6 +205,7 @@ function onSignOut() {
   gap: 4px;
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 0 10px;
 }
 
@@ -181,6 +215,7 @@ function onSignOut() {
   letter-spacing: 0.3px;
   color: var(--color-sidebar-muted);
   margin: var(--space-5) 10px var(--space-2);
+  white-space: nowrap;
 }
 
 .sidebar__section:first-child {
@@ -203,10 +238,14 @@ function onSignOut() {
   transition: all var(--transition-fast);
   width: 100%;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
-.sidebar__link span:first-of-type {
+.sidebar__link-label {
   flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sidebar__link:hover {
@@ -252,23 +291,27 @@ function onSignOut() {
   font-size: var(--text-sm);
   font-weight: var(--font-weight-header);
   color: #ffffff;
+  flex-shrink: 0;
 }
 
 .sidebar__user-meta {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  overflow: hidden;
 }
 
 .sidebar__user-name {
   color: var(--color-text);
   font-size: 14px;
   font-weight: var(--font-weight-header);
+  white-space: nowrap;
 }
 
 .sidebar__user-role {
   color: var(--color-text-muted);
   font-size: 12px;
+  white-space: nowrap;
 }
 
 .sidebar__icon-btn {
@@ -281,11 +324,77 @@ function onSignOut() {
   display: grid;
   place-items: center;
   transition: all var(--transition-fast);
+  flex-shrink: 0;
 }
 
 .sidebar__icon-btn:hover {
   background: var(--color-bg-div);
   color: var(--color-text);
+}
+
+.sidebar__collapse {
+  position: absolute;
+  top: 24px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  z-index: 2;
+  padding: 0;
+}
+
+.sidebar__collapse:hover {
+  background: var(--color-bg-div);
+}
+
+.sidebar--collapsed {
+  width: var(--sidebar-collapsed-width);
+}
+
+.sidebar--collapsed .sidebar__brand {
+  justify-content: center;
+  padding: var(--space-6) var(--space-3);
+}
+
+.sidebar--collapsed .sidebar__brand-text,
+.sidebar--collapsed .sidebar__link-label,
+.sidebar--collapsed .sidebar__badge,
+.sidebar--collapsed .sidebar__section,
+.sidebar--collapsed .sidebar__user-meta,
+.sidebar--collapsed .sidebar__icon-btn {
+  display: none;
+}
+
+.sidebar--collapsed .sidebar__logo {
+  width: 40px;
+  height: 40px;
+}
+
+.sidebar--collapsed .sidebar__nav {
+  padding: 0 8px;
+  align-items: center;
+}
+
+.sidebar--collapsed .sidebar__link {
+  justify-content: center;
+  padding: 10px;
+  width: 48px;
+}
+
+.sidebar--collapsed .sidebar__footer {
+  justify-content: center;
+  padding: var(--space-6) 0 0;
+}
+
+.sidebar--collapsed .sidebar__user {
+  justify-content: center;
 }
 
 @media (max-width: 1024px) {
@@ -304,12 +413,44 @@ function onSignOut() {
     z-index: 110;
   }
 
+  .sidebar--collapsed {
+    width: min(300px, 88vw);
+  }
+
   .sidebar--open {
     transform: translateX(0);
   }
 
   .sidebar__close {
     display: grid;
+  }
+
+  .sidebar__collapse {
+    display: none;
+  }
+
+  .sidebar--collapsed .sidebar__brand-text,
+  .sidebar--collapsed .sidebar__link-label,
+  .sidebar--collapsed .sidebar__badge,
+  .sidebar--collapsed .sidebar__section,
+  .sidebar--collapsed .sidebar__user-meta,
+  .sidebar--collapsed .sidebar__icon-btn {
+    display: initial;
+  }
+
+  .sidebar--collapsed .sidebar__user-meta {
+    display: flex;
+  }
+
+  .sidebar--collapsed .sidebar__link {
+    justify-content: flex-start;
+    padding: 10px 20px;
+    width: 100%;
+  }
+
+  .sidebar--collapsed .sidebar__nav {
+    padding: 0 10px;
+    align-items: stretch;
   }
 
   .sidebar__brand {
@@ -326,7 +467,8 @@ function onSignOut() {
 }
 
 @media (max-width: 600px) {
-  .sidebar {
+  .sidebar,
+  .sidebar--collapsed {
     width: min(320px, 92vw);
   }
 

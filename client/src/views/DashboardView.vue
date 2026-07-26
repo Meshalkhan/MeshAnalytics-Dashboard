@@ -11,11 +11,12 @@
             v-if="activeNav !== 'dashboard'"
             variant="secondary"
             size="md"
-            class="dashboard__back-btn"
+            icon-only
+            aria-label="Back to Dashboard"
+            title="Back to Dashboard"
             @click="setActiveNav('dashboard')"
           >
-            <template #leading><BaseIcon name="arrowLeft" :size="16" /></template>
-            Back to Dashboard
+            <template #leading><BaseIcon name="arrowLeft" :size="18" /></template>
           </BaseButton>
           <BaseButton
             v-else
@@ -34,7 +35,6 @@
     <SectionView
       v-if="activeNav !== 'dashboard'"
       :section="activeNav"
-      @back="setActiveNav('dashboard')"
     />
 
     <template v-else>
@@ -279,10 +279,6 @@ onMounted(loadDashboard);
 @media (max-width: 600px) {
   .dashboard__content {
     gap: var(--space-4);
-  }
-
-  .dashboard__back-btn {
-    width: 100%;
   }
 }
 </style>
