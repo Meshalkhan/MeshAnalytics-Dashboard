@@ -34,24 +34,25 @@ defineProps({
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  font-size: var(--text-sm);
-  letter-spacing: 0.01em;
-  transition: background var(--transition-fast), border-color var(--transition-fast),
-    color var(--transition-fast), transform var(--transition-fast);
+  gap: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-header);
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  transition: all var(--transition-base);
   white-space: nowrap;
+  font-family: inherit;
 }
 
 .btn--md {
-  padding: 9px 14px;
+  padding: 12px 24px;
 }
 
 .btn--sm {
-  padding: 6px 10px;
-  font-size: var(--text-xs);
+  padding: 7px 19px;
+  font-size: 14px;
+  font-weight: var(--font-weight-label);
 }
 
 .btn--icon {
@@ -59,39 +60,45 @@ defineProps({
 }
 
 .btn--primary {
-  background: var(--color-primary);
+  background: #000;
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.32);
+  border-color: rgba(0, 0, 0, 0.5);
 }
 
 .btn--primary:hover:not(:disabled) {
-  background: var(--color-primary-strong);
+  background: #1f2937;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn--secondary {
   background: var(--color-surface);
   color: var(--color-text);
-  border-color: var(--color-border);
+  border-color: var(--color-text-muted);
 }
 
 .btn--secondary:hover:not(:disabled) {
-  background: var(--color-surface-muted);
-  border-color: var(--color-border-strong);
+  background: #000;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn--ghost {
   background: transparent;
   color: var(--color-text-muted);
+  border-color: transparent;
 }
 
 .btn--ghost:hover:not(:disabled) {
-  background: var(--color-primary-soft);
-  color: var(--color-primary-strong);
+  background: var(--color-bg-div);
+  color: var(--color-text);
 }
 
 .btn--danger {
   background: var(--color-danger);
   color: #ffffff;
+  border-color: var(--color-danger);
 }
 
 .btn:disabled {

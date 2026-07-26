@@ -18,7 +18,7 @@ const props = defineProps({
 const mergedOptions = computed(() => ({
   ...props.options,
   cutout: "62%",
-  scales: undefined,
+  scales: null,
   plugins: {
     ...(props.options.plugins || {}),
     legend: {

@@ -20,11 +20,11 @@ const SEGMENT_FACTORS = {
 };
 
 const PALETTE = {
-  primary: "#6366f1",
-  primarySoft: "rgba(99, 102, 241, 0.18)",
-  accent: "#22d3ee",
-  accentSoft: "rgba(34, 211, 238, 0.16)",
-  series: ["#6366f1", "#22d3ee", "#a855f7", "#10b981", "#f59e0b"]
+  primary: "#95BF1F",
+  primarySoft: "rgba(149, 191, 31, 0.18)",
+  accent: "#000000",
+  accentSoft: "rgba(0, 0, 0, 0.08)",
+  series: ["#95BF1F", "#000000", "#04C373", "#5D7E00", "#A8A8A8"]
 };
 
 const computeFactor = ({ period, region, segment }) =>
@@ -61,14 +61,31 @@ const buildKpis = (factor) => [
   }
 ];
 
-const buildCharts = (factor) => {
-  const labels = ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6"];
-  const revenueSeries = [160, 180, 210, 235, 260, 290].map((v) =>
-    Math.round(v * factor)
-  );
-  const pipelineSeries = [150, 175, 198, 220, 248, 280].map((v) =>
-    Math.round(v * factor * 0.95)
-  );
+const buildCharts = (factor, period) => {
+  const labelsByPeriod = {
+    "7d": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "30d": ["Week 1", "Week 2", "Week 3", "Week 4"],
+    "90d": ["Month 1", "Month 2", "Month 3"]
+  };
+  const seriesByPeriod = {
+    "7d": {
+      revenue: [22, 28, 25, 31, 36, 30, 34],
+      pipeline: [20, 26, 24, 29, 33, 28, 32]
+    },
+    "30d": {
+      revenue: [160, 180, 210, 235],
+      pipeline: [150, 175, 198, 220]
+    },
+    "90d": {
+      revenue: [420, 480, 530],
+      pipeline: [400, 455, 505]
+    }
+  };
+
+  const labels = labelsByPeriod[period] || labelsByPeriod["30d"];
+  const series = seriesByPeriod[period] || seriesByPeriod["30d"];
+  const revenueSeries = series.revenue.map((v) => Math.round(v * factor));
+  const pipelineSeries = series.pipeline.map((v) => Math.round(v * factor * 0.95));
 
   return {
     revenueTrend: {
@@ -151,7 +168,7 @@ export function getDashboardSnapshot(filters) {
     filters,
     generatedAt: new Date().toISOString(),
     kpis: buildKpis(factor),
-    charts: buildCharts(factor),
+    charts: buildCharts(factor, filters.period),
     table: buildTable(factor)
   };
 }

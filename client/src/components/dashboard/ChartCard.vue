@@ -3,7 +3,7 @@
     <template v-if="$slots.actions" #actions>
       <slot name="actions" />
     </template>
-    <div class="chart-card__canvas">
+    <div class="chart-card__canvas" :style="{ height: `${height}px` }" :aria-busy="loading">
       <BaseSkeleton v-if="loading" :height="`${height}px`" />
       <slot v-else />
     </div>
@@ -25,6 +25,12 @@ defineProps({
 <style scoped>
 .chart-card__canvas {
   position: relative;
-  height: 280px;
+  min-height: 200px;
+}
+
+@media (max-width: 600px) {
+  .chart-card__canvas {
+    height: 240px !important;
+  }
 }
 </style>

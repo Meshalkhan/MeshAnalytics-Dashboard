@@ -18,9 +18,9 @@ defineProps({
   display: block;
   background: linear-gradient(
     90deg,
-    rgba(148, 163, 184, 0.18) 0%,
-    rgba(148, 163, 184, 0.32) 50%,
-    rgba(148, 163, 184, 0.18) 100%
+    rgba(229, 229, 229, 0.6) 0%,
+    rgba(242, 242, 242, 0.95) 50%,
+    rgba(229, 229, 229, 0.6) 100%
   );
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.4s ease-in-out infinite;

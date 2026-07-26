@@ -1,5 +1,5 @@
 <template>
-  <aside class="sidebar" aria-label="Primary">
+  <aside class="sidebar" :class="{ 'sidebar--open': open }" aria-label="Primary">
     <div class="sidebar__brand">
       <div class="sidebar__logo">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -11,33 +11,41 @@
         <span class="sidebar__brand-name">MeshAnalytics</span>
         <span class="sidebar__brand-meta">Workspace · Mesh Inc.</span>
       </div>
+      <button
+        type="button"
+        class="sidebar__close"
+        aria-label="Close navigation"
+        @click="closeSidebar"
+      >
+        <BaseIcon name="close" :size="18" />
+      </button>
     </div>
 
     <nav class="sidebar__nav">
       <p class="sidebar__section">Insights</p>
-      <a
+      <button
         v-for="item in primary"
         :key="item.id"
-        href="#"
+        type="button"
         :class="['sidebar__link', { 'sidebar__link--active': item.id === active }]"
-        @click.prevent
+        @click="onNavigate(item.id)"
       >
         <BaseIcon :name="item.icon" :size="18" />
         <span>{{ item.label }}</span>
         <BaseBadge v-if="item.badge" tone="info">{{ item.badge }}</BaseBadge>
-      </a>
+      </button>
 
       <p class="sidebar__section">Workspace</p>
-      <a
+      <button
         v-for="item in secondary"
         :key="item.id"
-        href="#"
-        class="sidebar__link"
-        @click.prevent
+        type="button"
+        :class="['sidebar__link', { 'sidebar__link--active': item.id === active }]"
+        @click="onNavigate(item.id)"
       >
         <BaseIcon :name="item.icon" :size="18" />
         <span>{{ item.label }}</span>
-      </a>
+      </button>
     </nav>
 
     <div class="sidebar__footer">
@@ -48,7 +56,7 @@
           <span class="sidebar__user-role">Admin</span>
         </div>
       </div>
-      <button class="sidebar__icon-btn" aria-label="Sign out">
+      <button type="button" class="sidebar__icon-btn" aria-label="Sign out" @click="onSignOut">
         <BaseIcon name="logout" :size="16" />
       </button>
     </div>
@@ -58,10 +66,14 @@
 <script setup>
 import BaseIcon from "../ui/BaseIcon.vue";
 import BaseBadge from "../ui/BaseBadge.vue";
+import { useUi } from "../../composables/useUi.js";
 
 defineProps({
-  active: { type: String, default: "dashboard" }
+  active: { type: String, default: "dashboard" },
+  open: { type: Boolean, default: false }
 });
+
+const { setActiveNav, closeSidebar, signOut, showToast } = useUi();
 
 const primary = [
   { id: "dashboard", label: "Dashboard", icon: "dashboard" },
@@ -71,68 +83,104 @@ const primary = [
 ];
 
 const secondary = [{ id: "settings", label: "Settings", icon: "settings" }];
+
+function onNavigate(id) {
+  setActiveNav(id);
+  if (id !== "dashboard") {
+    showToast(`Opened ${id.charAt(0).toUpperCase() + id.slice(1)}.`, "info");
+  }
+}
+
+function onSignOut() {
+  signOut();
+}
 </script>
 
 <style scoped>
 .sidebar {
-  background: linear-gradient(180deg, var(--color-sidebar) 0%, var(--color-sidebar-elevated) 100%);
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  background: var(--color-sidebar);
   color: var(--color-sidebar-text);
   display: flex;
   flex-direction: column;
-  padding: var(--space-6) var(--space-4);
-  width: 248px;
+  padding: var(--space-4) 0 var(--space-6);
+  width: var(--sidebar-width);
   flex-shrink: 0;
-  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  border-right: 1px solid var(--color-sidebar-border);
+  z-index: 100;
+  box-sizing: border-box;
 }
 
 .sidebar__brand {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: 0 var(--space-2);
-  margin-bottom: var(--space-8);
+  padding: 12px;
+  margin-bottom: var(--space-6);
 }
 
 .sidebar__logo {
-  width: 38px;
-  height: 38px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
   display: grid;
   place-items: center;
   color: #ffffff;
-  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.45);
+  flex-shrink: 0;
 }
 
 .sidebar__brand-text {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  flex: 1;
 }
 
 .sidebar__brand-name {
-  font-weight: 700;
-  font-size: var(--text-base);
-  color: #ffffff;
+  font-weight: var(--font-weight-header);
+  font-size: 14px;
+  color: var(--color-text);
+  letter-spacing: 0.5px;
+  line-height: 1.2;
 }
 
 .sidebar__brand-meta {
-  font-size: var(--text-xs);
-  color: var(--color-sidebar-muted);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+}
+
+.sidebar__close {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  place-items: center;
 }
 
 .sidebar__nav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
   flex: 1;
+  overflow-y: auto;
+  padding: 0 10px;
 }
 
 .sidebar__section {
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: var(--font-weight-label);
+  letter-spacing: 0.3px;
   color: var(--color-sidebar-muted);
-  margin: var(--space-5) var(--space-2) var(--space-2);
+  margin: var(--space-5) 10px var(--space-2);
 }
 
 .sidebar__section:first-child {
@@ -143,13 +191,18 @@ const secondary = [{ id: "settings", label: "Settings", icon: "settings" }];
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: 9px var(--space-3);
-  border-radius: var(--radius-md);
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
   color: var(--color-sidebar-text);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  transition: background var(--transition-fast), color var(--transition-fast);
-  position: relative;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: inherit;
+  text-align: left;
+  transition: all var(--transition-fast);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .sidebar__link span:first-of-type {
@@ -157,20 +210,25 @@ const secondary = [{ id: "settings", label: "Settings", icon: "settings" }];
 }
 
 .sidebar__link:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
+  background: var(--color-sidebar-hover);
+  color: var(--color-text);
+  font-weight: var(--font-weight-label);
 }
 
 .sidebar__link--active {
-  background: rgba(99, 102, 241, 0.18);
-  color: #ffffff;
-  box-shadow: inset 2px 0 0 var(--color-primary);
+  background: var(--color-sidebar-active);
+  color: var(--color-sidebar-active-text);
+}
+
+.sidebar__link--active:hover {
+  background: var(--color-sidebar-active);
+  color: var(--color-sidebar-active-text);
 }
 
 .sidebar__footer {
-  margin-top: var(--space-6);
-  padding-top: var(--space-4);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: auto;
+  padding: var(--space-6) var(--space-6) 0;
+  border-top: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -188,11 +246,11 @@ const secondary = [{ id: "settings", label: "Settings", icon: "settings" }];
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+  background: var(--color-text);
   display: grid;
   place-items: center;
   font-size: var(--text-sm);
-  font-weight: 700;
+  font-weight: var(--font-weight-header);
   color: #ffffff;
 }
 
@@ -203,51 +261,55 @@ const secondary = [{ id: "settings", label: "Settings", icon: "settings" }];
 }
 
 .sidebar__user-name {
-  color: #ffffff;
-  font-size: var(--text-sm);
-  font-weight: 600;
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: var(--font-weight-header);
 }
 
 .sidebar__user-role {
-  color: var(--color-sidebar-muted);
-  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-size: 12px;
 }
 
 .sidebar__icon-btn {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-md);
-  color: var(--color-sidebar-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
   width: 32px;
   height: 32px;
   display: grid;
   place-items: center;
-  transition: color var(--transition-fast), border-color var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
 .sidebar__icon-btn:hover {
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.18);
+  background: var(--color-bg-div);
+  color: var(--color-text);
 }
 
 @media (max-width: 1024px) {
   .sidebar {
-    width: 100%;
-    flex-direction: row;
-    align-items: center;
-    padding: var(--space-3) var(--space-4);
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: min(300px, 88vw);
+    transform: translateX(-105%);
+    transition: transform 0.22s ease;
+    box-shadow: var(--shadow-lg);
   }
 
-  .sidebar__nav,
-  .sidebar__footer,
-  .sidebar__section {
-    display: none;
+  .sidebar--open {
+    transform: translateX(0);
+  }
+
+  .sidebar__close {
+    display: grid;
   }
 
   .sidebar__brand {
-    margin: 0;
+    margin-bottom: var(--space-4);
   }
 }
 </style>

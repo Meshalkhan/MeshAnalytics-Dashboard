@@ -35,37 +35,64 @@ defineProps({
 .kpi {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-5);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  box-shadow: none;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  min-height: 130px;
+  gap: 0;
+  min-height: 134px;
+  position: relative;
+  transition: all var(--transition-base);
+  flex: 1;
+}
+
+.kpi:hover {
+  background: var(--color-text);
+  box-shadow: var(--shadow-lg);
+}
+
+.kpi:hover .kpi__title,
+.kpi:hover .kpi__value,
+.kpi:hover .kpi__helper {
+  color: #ffffff;
 }
 
 .kpi__header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-3);
 }
 
 .kpi__title {
-  font-size: var(--text-sm);
+  font-size: 14px;
   color: var(--color-text-muted);
-  font-weight: 500;
+  font-weight: var(--font-weight-label);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  transition: color var(--transition-base);
 }
 
 .kpi__value {
-  font-size: var(--text-2xl);
-  font-weight: 700;
+  font-size: clamp(1.4rem, 3vw, 1.875rem);
+  font-weight: var(--font-weight-header);
   color: var(--color-text);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.05em;
+  line-height: 1.2;
+  margin-top: auto;
+  padding-top: var(--space-8);
+  transition: color var(--transition-base);
 }
 
 .kpi__helper {
-  font-size: var(--text-xs);
+  font-size: 12px;
   color: var(--color-text-subtle);
+  margin-top: var(--space-2);
+  transition: color var(--transition-base);
+}
+
+.kpi--loading {
+  pointer-events: none;
 }
 </style>

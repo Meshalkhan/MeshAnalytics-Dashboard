@@ -8,6 +8,8 @@ const emptyCharts = () => ({
   segmentBreakdown: { labels: [], datasets: [] }
 });
 
+let inflightController = null;
+
 export const useDashboardStore = defineStore("dashboard", {
   state: () => ({
     status: "idle",
@@ -16,8 +18,7 @@ export const useDashboardStore = defineStore("dashboard", {
     filters: { ...DEFAULT_FILTERS },
     kpis: [],
     charts: emptyCharts(),
-    table: [],
-    inflightController: null
+    table: []
   }),
   getters: {
     isLoading: (state) => state.status === "loading",
@@ -26,11 +27,11 @@ export const useDashboardStore = defineStore("dashboard", {
   },
   actions: {
     async loadDashboard() {
-      if (this.inflightController) {
-        this.inflightController.abort();
+      if (inflightController) {
+        inflightController.abort();
       }
       const controller = new AbortController();
-      this.inflightController = controller;
+      inflightController = controller;
       this.status = "loading";
       this.error = null;
 
@@ -47,8 +48,8 @@ export const useDashboardStore = defineStore("dashboard", {
         this.error = err.message || "Unable to load analytics data.";
         this.status = "error";
       } finally {
-        if (this.inflightController === controller) {
-          this.inflightController = null;
+        if (inflightController === controller) {
+          inflightController = null;
         }
       }
     },

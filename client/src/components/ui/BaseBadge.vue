@@ -19,17 +19,20 @@ defineProps({
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 2px 8px;
-  border-radius: var(--radius-pill);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  height: 30px;
+  padding: 6px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.015em;
+  line-height: 1.47;
+  white-space: nowrap;
 }
 
 .badge--neutral {
-  background: var(--color-surface-muted);
-  color: var(--color-text-muted);
-  border: 1px solid var(--color-border);
+  background: #e2e2e2;
+  color: #000000;
+  border: none;
 }
 
 .badge--success {
@@ -44,6 +47,6 @@ defineProps({
 
 .badge--info {
   background: var(--color-primary-soft);
-  color: var(--color-primary-strong);
+  color: var(--color-primary);
 }
 </style>

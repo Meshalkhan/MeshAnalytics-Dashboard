@@ -2,7 +2,7 @@
   <label class="select">
     <span v-if="label" class="select__label">{{ label }}</span>
     <span class="select__field">
-      <select :value="modelValue" @change="onChange">
+      <select :value="modelValue" :disabled="disabled" @change="onChange">
         <option v-for="option in options" :key="option.value" :value="option.value">
           {{ option.label }}
         </option>
@@ -20,7 +20,8 @@
 defineProps({
   modelValue: { type: [String, Number], required: true },
   options: { type: Array, required: true },
-  label: { type: String, default: "" }
+  label: { type: String, default: "" },
+  disabled: { type: Boolean, default: false }
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -32,14 +33,15 @@ const onChange = (event) => emit("update:modelValue", event.target.value);
 .select {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
+  gap: 8px;
+  font-size: 14px;
   color: var(--color-text-muted);
 }
 
 .select__label {
-  font-weight: 500;
-  color: var(--color-text);
+  font-weight: var(--font-weight-label);
+  color: var(--color-text-muted);
+  font-size: 14px;
 }
 
 .select__field {
@@ -50,13 +52,15 @@ const onChange = (event) => emit("update:modelValue", event.target.value);
 .select__field select {
   appearance: none;
   width: 100%;
-  padding: 9px 36px 9px 12px;
+  padding: 10px 36px 10px 12px;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   background: var(--color-surface);
-  font-size: var(--text-sm);
+  font-family: inherit;
+  font-size: 14px;
   color: var(--color-text);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: all var(--transition-fast);
+  height: 40px;
 }
 
 .select__field select:hover {
@@ -64,9 +68,15 @@ const onChange = (event) => emit("update:modelValue", event.target.value);
 }
 
 .select__field select:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-soft);
+  border-color: var(--color-text);
+  box-shadow: none;
   outline: none;
+}
+
+.select__field select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--color-bg-div);
 }
 
 .select__chevron {

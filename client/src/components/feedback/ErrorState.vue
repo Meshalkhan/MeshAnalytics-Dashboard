@@ -31,18 +31,18 @@ defineEmits(["retry"]);
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-5) var(--space-6);
   background: var(--color-danger-soft);
-  border: 1px solid rgba(239, 68, 68, 0.25);
-  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 0, 4, 0.2);
+  border-radius: var(--radius-sm);
   color: var(--color-text);
 }
 
 .error-state__icon {
   width: 40px;
   height: 40px;
-  border-radius: var(--radius-md);
-  background: rgba(239, 68, 68, 0.18);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 0, 4, 0.12);
   color: var(--color-danger);
   display: grid;
   place-items: center;
@@ -50,17 +50,28 @@ defineEmits(["retry"]);
 }
 
 .error-state__copy h3 {
-  font-size: var(--text-sm);
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: var(--font-weight-header);
 }
 
 .error-state__copy p {
-  font-size: var(--text-xs);
+  font-size: 12px;
   color: var(--color-text-muted);
   margin-top: 2px;
 }
 
 .error-state__copy {
   flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .error-state {
+    flex-wrap: wrap;
+  }
+
+  .error-state__copy {
+    flex: 1 1 180px;
+  }
 }
 </style>

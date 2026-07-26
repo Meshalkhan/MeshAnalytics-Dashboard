@@ -1,7 +1,7 @@
 <template>
-  <div class="kpi-grid">
+  <div class="kpi-grid" :aria-busy="loading">
     <template v-if="loading && !kpis.length">
-      <KpiCard v-for="n in 4" :key="n" loading />
+      <KpiCard v-for="n in 4" :key="`skeleton-${n}`" loading />
     </template>
     <template v-else>
       <KpiCard
@@ -29,7 +29,8 @@ defineProps({
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-4);
+  gap: 10px;
+  width: 100%;
 }
 
 @media (max-width: 1180px) {

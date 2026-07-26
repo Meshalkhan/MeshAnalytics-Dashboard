@@ -20,32 +20,32 @@ const baseOptions = {
     legend: {
       align: "end",
       labels: {
-        color: "#475569",
+        color: "#4D4D4D",
         usePointStyle: true,
         boxWidth: 6,
         boxHeight: 6,
         padding: 16,
-        font: { size: 12, family: "Inter, sans-serif" }
+        font: { size: 12, family: "Inter, Helvetica Neue, Helvetica, Arial, sans-serif" }
       }
     },
     tooltip: {
-      backgroundColor: "#0f172a",
-      titleColor: "#e2e8f0",
-      bodyColor: "#e2e8f0",
+      backgroundColor: "#000000",
+      titleColor: "#ffffff",
+      bodyColor: "#ffffff",
       padding: 10,
-      cornerRadius: 8,
+      cornerRadius: 15,
       displayColors: false
     }
   },
   scales: {
     x: {
-      ticks: { color: "#94a3b8", font: { size: 11, family: "Inter, sans-serif" } },
+      ticks: { color: "#7E7E7E", font: { size: 11, family: "Inter, Helvetica Neue, Helvetica, Arial, sans-serif" } },
       grid: { display: false },
       border: { display: false }
     },
     y: {
-      ticks: { color: "#94a3b8", font: { size: 11, family: "Inter, sans-serif" } },
-      grid: { color: "rgba(148, 163, 184, 0.15)" },
+      ticks: { color: "#7E7E7E", font: { size: 11, family: "Inter, Helvetica Neue, Helvetica, Arial, sans-serif" } },
+      grid: { color: "rgba(0, 0, 0, 0.06)" },
       border: { display: false }
     }
   }
@@ -62,7 +62,12 @@ const mergedOptions = computed(() => {
       legend: { ...baseOptions.plugins.legend, ...(overrides.plugins?.legend || {}) },
       tooltip: { ...baseOptions.plugins.tooltip, ...(overrides.plugins?.tooltip || {}) }
     },
-    scales: overrides.scales === undefined ? baseOptions.scales : overrides.scales
+    scales:
+      overrides.scales === undefined
+        ? baseOptions.scales
+        : overrides.scales === null
+          ? {}
+          : overrides.scales
   };
 });
 </script>
