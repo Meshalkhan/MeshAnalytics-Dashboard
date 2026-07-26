@@ -195,16 +195,19 @@ const filteredTable = computed(() => {
 async function refresh() {
   await loadDashboard();
   if (!error.value) showToast("Dashboard data refreshed.", "success");
+  else showToast(error.value, "error");
 }
 
 async function onApplyFilters(next) {
   await updateFilters(next);
   if (!error.value) showToast("Filters applied.", "success");
+  else showToast(error.value, "error");
 }
 
 async function onResetFilters() {
   await resetFilters();
   if (!error.value) showToast("Filters reset.", "info");
+  else showToast(error.value, "error");
 }
 
 onMounted(loadDashboard);
