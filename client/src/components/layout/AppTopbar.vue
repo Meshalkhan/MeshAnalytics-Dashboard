@@ -394,6 +394,11 @@ onUnmounted(() => window.removeEventListener("keydown", onKeydown));
     justify-content: stretch;
   }
 
+  .topbar__actions :deep(.btn) {
+    flex: 1;
+    min-width: 0;
+  }
+
   .topbar__subtitle {
     max-width: none;
   }
@@ -406,6 +411,15 @@ onUnmounted(() => window.removeEventListener("keydown", onKeydown));
 
   .topbar__hotkey {
     display: none;
+  }
+
+  .topbar__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .topbar__actions :deep(.btn) {
+    width: 100%;
   }
 }
 </style>

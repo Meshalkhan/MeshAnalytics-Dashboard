@@ -130,6 +130,12 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.filters {
+  position: sticky;
+  top: 12px;
+  align-self: start;
+}
+
 .filters__toggle {
   width: 100%;
   display: flex;
@@ -163,6 +169,7 @@ onUnmounted(() => {
 .filters__chevron {
   display: none;
   transition: transform 0.2s ease;
+  flex-shrink: 0;
 }
 
 .filters__group {
@@ -191,9 +198,15 @@ onUnmounted(() => {
 }
 
 @media (max-width: 1180px) {
+  .filters {
+    position: static;
+    width: 100%;
+  }
+
   .filters__toggle {
     cursor: pointer;
     pointer-events: auto;
+    min-height: 44px;
   }
 
   .filters__chevron {
@@ -202,6 +215,10 @@ onUnmounted(() => {
 
   .filters--collapsed .filters__chevron {
     transform: rotate(-90deg);
+  }
+
+  .filters--collapsed :deep(.card__body) {
+    display: none;
   }
 
   .filters__group {

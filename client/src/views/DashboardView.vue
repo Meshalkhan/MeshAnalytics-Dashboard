@@ -8,7 +8,17 @@
       >
         <template #actions>
           <BaseButton
-            v-if="activeNav === 'dashboard'"
+            v-if="activeNav !== 'dashboard'"
+            variant="secondary"
+            size="md"
+            class="dashboard__back-btn"
+            @click="setActiveNav('dashboard')"
+          >
+            <template #leading><BaseIcon name="arrowLeft" :size="16" /></template>
+            Back to Dashboard
+          </BaseButton>
+          <BaseButton
+            v-else
             variant="secondary"
             size="md"
             :loading="isLoading"
@@ -269,6 +279,10 @@ onMounted(loadDashboard);
 @media (max-width: 600px) {
   .dashboard__content {
     gap: var(--space-4);
+  }
+
+  .dashboard__back-btn {
+    width: 100%;
   }
 }
 </style>

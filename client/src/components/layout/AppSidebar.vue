@@ -293,11 +293,15 @@ function onSignOut() {
     position: fixed;
     left: 0;
     top: 0;
-    height: 100vh;
+    height: 100%;
+    height: 100dvh;
     width: min(300px, 88vw);
+    max-width: 100%;
+    padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
     transform: translateX(-105%);
     transition: transform 0.22s ease;
     box-shadow: var(--shadow-lg);
+    z-index: 110;
   }
 
   .sidebar--open {
@@ -310,6 +314,25 @@ function onSignOut() {
 
   .sidebar__brand {
     margin-bottom: var(--space-4);
+  }
+
+  .sidebar__nav {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar__footer {
+    padding-bottom: var(--space-2);
+  }
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    width: min(320px, 92vw);
+  }
+
+  .sidebar__link {
+    min-height: 44px;
+    padding: 12px 16px;
   }
 }
 </style>
